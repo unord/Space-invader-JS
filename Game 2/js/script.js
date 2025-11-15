@@ -3,10 +3,10 @@ window.onload=function(){
 	var canvas = document.getElementById('myCanvas');
 	var context = canvas.getContext('2d');
 	// Opretter billeder:
-	var revolver = new Image();
-	revolver.src="./img/revolver.png";
-	var projektil = new Image();
-	projektil.src="./img/projektil.png";
+	var Tea = new Image();
+	Tea.src="./img/Tea_Time_Base.png";
+	var Hot_air = new Image();
+	Hot_air.src="./img/Tea_Time_Mist.png";
 	var trold = new Image();
 	trold.src="./img/trold.png";
 	// variabler til positioner på canvas
