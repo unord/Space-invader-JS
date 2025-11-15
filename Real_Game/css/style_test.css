@@ -1,0 +1,38 @@
+.grid {
+    width: 1200px;
+    height: 1200px;
+    border: solid black 1px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(10, 34, 141);
+}
+
+.grid div {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.invader {
+	background-color: purple;
+	border-radius: 40px;
+}
+
+.shooter {
+	background-image: url('../img/Tea_Time_Base.png');
+}
+
+.laser {
+	background-image: url('../img/Tea_Time_Mist.gif');
+}
+
+.shooter, .laser {
+    background-size: contain;        /* Sørger for at billedet fylder hele div'en */    
+    background-repeat: no-repeat;  /* Undgår gentagelse af billedet */
+    background-position: center;   /* Centrerer billedet */
+}
+
+.boom {
+	background-color: red;
+}
