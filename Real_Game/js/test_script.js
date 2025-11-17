@@ -8,6 +8,8 @@ const resultDisplay = document.querySelector(".results")
 // Da grid'en er 15 kolonner bred, svarer index 216 til række 14, kolonne 6
 let currentShooterIndex = 216
 
+var pressed = false;
+
 // Antal kolonner i grid'en (bruges til at beregne bevægelser og kanter)
 const width = 15
 
@@ -26,61 +28,6 @@ let direction = 1
 
 // Antal point spilleren har opnået (antal fjender ramt)
 let results = 0
-class NoAutoplayGif extends HTMLElement {
-  constructor() {
-    super()
-
-    // Attach the shadow DOM
-    this._shadowRoot = this.attachShadow({ mode: 'open' })
-
-    // Add the template from above
-    this._shadowRoot.appendChild(
-      noAutoplayGifTemplate.content.cloneNode(true)
-    )
-
-    // We'll need these later on.
-    this.canvas = this._shadowRoot.querySelector('canvas')
-    this.img = this._shadowRoot.querySelector('img')
-    this.container = this._shadowRoot.querySelector('.no-autoplay-gif')
-
-  function loadImage() {
-    const src = this.getAttribute('src')
-    const alt = this.getAttribute('alt')
-
-    this.img.onload = event => {
-      const width = event.currentTarget.width
-      const height = event.currentTarget.height
-
-      // "Draws" the gif onto a canvas, i.e. the first
-      // frame, making it look like a thumbnail.
-      this.canvas.getContext('2d').drawImage(this.img, 0, 0)
-    }
-
-    // Trigger the loading
-    this.img.src = src
-    this.img.alt = alt
-  }
-
-  function toggleImage(force = undefined) {
-    this.img.classList.toggle('hidden', force)
-    this.canvas.classList.toggle('hidden', force !== undefined ? !force : undefined)
-    this.label.classList.toggle('hidden', force !== undefined ? !force : undefined)
-  }
-
-  function start() {
-    this.toggleImage(false)
-  }
-
-  function stop() {
-    this.toggleImage(true)
-  }
-
-  attributeChangedCallback(name, oldVal, newVal) {
-    if (oldVal !== newVal || oldVal === null) {
-      this.loadImage()
-    }
-  }
-}
 
 // Opretter 225 <div>-elementer (15x15 grid) og tilføjer dem til grid-containeren
 for (let i = 0; i < width * width; i++) {
@@ -94,9 +41,9 @@ const squares = Array.from(document.querySelectorAll(".grid div"))
 // Definerer de initiale positioner for fjenderne (invaders) i grid'en
 // Disse er index i squares-arrayet, og danner 3 rækker af fjender
 const alienInvaders = [
-    1, 2, 3, 4, 5, 6, 7, 8,
-    16, 17, 18, 19, 20, 21, 22, 23,
-    31, 32, 33, 34, 35, 36, 37, 38
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+    15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+    30, 31, 32, 33, 34, 35, 36, 37, 38, 39
 ]
 
 // Funktion til at tegne fjenderne på grid'en
@@ -128,7 +75,7 @@ function moveShooter(e) {
     // Fjerner skyderen fra nuværende position
     squares[currentShooterIndex].classList.remove("shooter")
 
-    // Flytter skyderen hvis den ikke er ved kanten
+    // Flytter shooter hvis den ikke er ved kanten
     switch (e.key) {
         case "ArrowLeft":
             if (currentShooterIndex % width !== 0) currentShooterIndex -= 1
@@ -138,12 +85,13 @@ function moveShooter(e) {
             break
     }
 
-    // Tilføjer skyderen på den nye position
+    // Tilføjer shooter på den nye position
     squares[currentShooterIndex].classList.add("shooter")
 }
 
 // Lytter efter tastetryk og kalder moveShooter ved venstre/højre pil
 document.addEventListener("keydown", moveShooter)
+
 
 // Funktion til at flytte fjenderne og håndtere kantkollisioner og spilstatus
 function moveInvaders() {
@@ -230,9 +178,13 @@ function shoot(e) {
     }
 
     // Start laserens bevægelse hvis pil op trykkes
-    if (e.key === "ArrowUp") {
+    if (e.key === "ArrowUp" && !pressed) {    //sætter et flag for at forhindre gentagelse
         laserId = setInterval(moveLaser, 100)
+        pressed = true;
+    if (pressed = true);
+        setTimeout(() => { pressed = false; }, 300); // Debounce for at forhindre hurtig gentagelse
     }
+    
 }
 
 // Lytter efter tastetryk for at aktivere skydning
