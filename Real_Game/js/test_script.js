@@ -7,6 +7,7 @@ const resultDisplay = document.querySelector(".results")
 // Definerer skyderens startposition (nederst i midten af grid'en)
 // Da grid'en er 15 kolonner bred, svarer index 216 til række 14, kolonne 6
 let currentShooterIndex = 216
+let NowFatShooter = [215,216,217]; //bruges ikke endnu
 
 var pressed = false;
 
@@ -60,7 +61,7 @@ function draw() {
 draw()
 
 // Placerer skyderen (spilleren) på sin startposition ved at tilføje "shooter"-klassen
-squares[currentShooterIndex].classList.add("shooter")
+NowFatShooter.forEach(Index => squares[currentShooterIndex].classList.add("shooter"))
 
 // Funktion til at fjerne alle fjender fra deres nuværende positioner
 // Bruges før de flyttes, så de kan tegnes igen på nye positioner
@@ -73,7 +74,7 @@ function remove() {
 // Funktion til at flytte skyderen til venstre eller højre, afhængigt af tastetryk
 function moveShooter(e) {
     // Fjerner skyderen fra nuværende position
-    squares[currentShooterIndex].classList.remove("shooter")
+    NowFatShooter.forEach(Index => squares[Index].classList.remove("shooter"))
 
     // Flytter shooter hvis den ikke er ved kanten
     switch (e.key) {
@@ -86,7 +87,7 @@ function moveShooter(e) {
     }
 
     // Tilføjer shooter på den nye position
-    squares[currentShooterIndex].classList.add("shooter")
+    NowFatShooter.forEach(Index => squares[Index].classList.add("shooter"))
 }
 
 // Lytter efter tastetryk og kalder moveShooter ved venstre/højre pil
@@ -149,7 +150,7 @@ invadersId = setInterval(moveInvaders, 600)
 // Funktion til at håndtere skydning når spilleren trykker pil op
 function shoot(e) {
     let laserId // ID til at styre laserens bevægelse
-    let currentLaserIndex = currentShooterIndex + 1 // Startposition for laser (lige over skyderen)
+    let currentLaserIndex = NowFatShooter[1] + 1 // Startposition for laser (lige over skyderen)
 
     // Funktion til at flytte laseren opad og tjekke for kollision
     function moveLaser() {
